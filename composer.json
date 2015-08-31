@@ -1,0 +1,24 @@
+{
+  "name": "ocarina/ocarina",
+  "type": "library",
+  "version": "v1.0.0-alpha",
+  "description": "Ocarina is a lite MVC framework base on PHP language",
+  "keywords": ["framework", "PHP", "MVC"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Matthieu LEFEVRE",
+      "email": "lefevre.matthieu@outlook.com"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/smart-php/smarty"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3",
+    "smarty/smarty":"3.1.27"
+  }
+}
