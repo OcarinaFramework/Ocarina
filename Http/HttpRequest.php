@@ -97,27 +97,52 @@ class HttpRequest {
     }
 
 
-
     protected function buildParams() {
         $params = array();
+        $this->buildGetParams($params);
+        $this->buildPostParams($params);
+        $this->buildFileParams($params);
+
+        foreach($params as $name => $param) {
+            $isMultipart = false;
+            if(is_array($param) && array_key_exists('multipart', $param)) {
+                $isMultipart = $param['multipart'];
+            }
+            $this->_params[] = new HttpRequestParam($name, $param, $isMultipart);
+        }
+    }
+
+    private function mergeParam($params, $paramName, $param) {
+        if(array_key_exists($paramName, $params)) {
+            if(is_array($param)) {
+                return array_merge($params[$paramName], $param);
+            } else {
+                return $params[$paramName][] = $param;
+            }
+        }
+        return $param;
+    }
+
+    private function buildGetParams(array &$params) {
         foreach($_GET as $paramName => $paramValue) {
-            $params[] = new HttpRequestParam($paramName, $paramValue);
+            $params[$paramName] = $this->mergeParam($params, $paramName, $paramValue);
         }
         for($i = 0; $i < count($this->_uriParams); $i+=2) {
-            $params[] = new HttpRequestParam($this->_uriParams[$i], $this->_uriParams[$i+1]);
+            $params[$this->_uriParams[$i]] = $this->mergeParam($params, $this->_uriParams[$i], $this->_uriParams[$i+1]);
         }
+    }
 
+    private function buildPostParams(array &$params) {
         foreach($_POST as $paramName => $paramValue) {
-            $params[] = new HttpRequestParam($paramName, $paramValue);
+            $params[$paramName] = $this->mergeParam($params, $paramName, $paramValue);
         }
+    }
 
+    private function buildFileParams(array &$params) {
         foreach($_FILES as $paramName => $file) {
-            $param = new HttpRequestParam($paramName, $file);
-            $param->setMultipart(true);
-            $params[] = $param;
+            $params[$paramName] = $this->mergeParam($params, $paramName, $file);
+            $params[$paramName]['multipart'] = true;
         }
-
-        $this->_params = $params;
     }
 
     /**

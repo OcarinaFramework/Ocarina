@@ -24,10 +24,10 @@ class HttpRequestParam {
     private $_value;
 
 
-    public function __construct($name = null, $value = null) {
+    public function __construct($name = null, $value = null, $multipart = false) {
         $this->_name = $name;
         $this->_value = $value;
-        $this->_multipart = false;
+        $this->_multipart = $multipart;
     }
 
     /**

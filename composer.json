@@ -1,7 +1,7 @@
 {
   "name": "ocarina/ocarina",
   "type": "library",
-  "version": "v1.0.0-alpha",
+  "version": "v1.0.1-alpha",
   "description": "Ocarina is a lite MVC framework base on PHP language",
   "keywords": ["framework", "PHP", "MVC"],
   "license": "MIT",
